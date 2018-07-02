@@ -4,9 +4,11 @@ public class Processo {
     private int pid;
     private int tid;
     private String name;
+    private OSInterface osInterface;
 
-    public Processo(String name){
+    public Processo(String name, OSInterface osInterface){
         this.name = name;
+        this.osInterface = osInterface;
     }
 
     public int getPid() {
