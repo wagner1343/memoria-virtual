@@ -2,21 +2,17 @@ package sistemaoperacional;
 
 public class Processo {
     private int pid;
-    private int tid;
     private String name;
-    private OSInterface osInterface;
+    private int tabelaFAddr;
 
-    public Processo(String name, OSInterface osInterface){
+    public Processo(String name, int pid, int tabelaFAddr){
         this.name = name;
-        this.osInterface = osInterface;
+        this.pid = pid;
+        this.tabelaFAddr = tabelaFAddr;
     }
 
     public int getPid() {
         return pid;
-    }
-
-    public void setPid(int pid) {
-        this.pid = pid;
     }
 
     public String toString(){
@@ -27,11 +23,11 @@ public class Processo {
         return name;
     }
 
-    public int getTid() {
-        return tid;
+    public int getTabelaFAddr() {
+        return tabelaFAddr;
     }
 
-    public void setTid(int tid) {
-        this.tid = tid;
+    public void setTabelaFAddr(int tabelaFAddr) {
+        this.tabelaFAddr = tabelaFAddr;
     }
 }

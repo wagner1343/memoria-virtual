@@ -1,45 +1,68 @@
 package memoria.virtual.paginacao;
 
-public class TabelaDePaginas {
+import memoria.mmu.MMU;
+import util.serialization.Serializavel;
 
-    private Pagina[] paginas;
-    private int tamPagina;
-    int numPaginas;
+import java.util.Arrays;
 
+public class TabelaDePaginas implements Serializavel{
+    public static final int TAMANHO_BYTES = MMU.NUM_PAGINAS * EntradaDePagina.TAMANHO_BYTES;
+    byte[] bytes;
 
-    public TabelaDePaginas(int numPaginas, int tamPagina){
-        paginas = new Pagina[numPaginas];
-        this.numPaginas = numPaginas;
-        this.tamPagina = tamPagina;
+    public TabelaDePaginas(){
+        bytes = new byte[MMU.NUM_PAGINAS * EntradaDePagina.TAMANHO_BYTES];
+        Arrays.fill(bytes, (byte) -1);
     }
 
-    public int getNumPaginas(){
-        return this.numPaginas;
+    public TabelaDePaginas(byte[] bytes){
+        this.bytes = bytes;
     }
 
-    public Pagina getPagina(int addr){
-        return paginas[addr];
+    public EntradaDePagina getPagina(int numeroDePagina){
+        byte[] entradaDePaginaBytes = new byte[EntradaDePagina.TAMANHO_BYTES];
+
+        int baseAddr = numeroDePagina * EntradaDePagina.TAMANHO_BYTES;
+        for(int x = 0; x < EntradaDePagina.TAMANHO_BYTES; x++)
+            entradaDePaginaBytes[x] = bytes[baseAddr + x];
+
+        return new EntradaDePagina(entradaDePaginaBytes);
     }
 
-    public void setPagina(int addr, Pagina pagina){
-        paginas[addr] = pagina;
+    public void setPagina(int numeroDePagina, EntradaDePagina entradaDePagina){
+        int baseAddr = numeroDePagina * EntradaDePagina.TAMANHO_BYTES;
+
+        byte[] entradaDePaginaBytes = entradaDePagina.serializar();
+
+        for(int x = 0; x < EntradaDePagina.TAMANHO_BYTES; x++){
+            bytes[baseAddr + x] = entradaDePaginaBytes[x];
+        }
     }
 
     public boolean isAlocado(int numPagina){
-        return paginas[numPagina] != null;
+        return getPagina(numPagina).getBaseFAddr() < 0;
     }
 
     public void liberarPagina(int numPagina){
-        paginas[numPagina] = null;
+        setPagina(numPagina, new EntradaDePagina(-1, false));
+    }
+
+    public int getNumPaginas(){
+        return bytes.length / EntradaDePagina.TAMANHO_BYTES;
     }
 
     public String toString(){
         String s = "vAddr\t\tfAddr\t\tdisco\t\tcount\n";
 
-        for(int x = 0; x < paginas.length; x++) {
-            Pagina e = paginas[x];
-            s += (e == null) ? "" : x * tamPagina + "\t\t\t" + e.toString() + "\n";
+        int numPaginas = getNumPaginas();
+        for(int x = 0; x < numPaginas; x++) {
+            EntradaDePagina e = getPagina(x);
+            s += (e == null) ? "" : x * MMU.TAM_PAGINA + "\t\t\t" + e.toString() + "\n";
         }
         return s;
+    }
+
+    @Override
+    public byte[] serializar() {
+        return bytes;
     }
 }

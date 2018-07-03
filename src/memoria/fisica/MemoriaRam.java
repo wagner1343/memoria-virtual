@@ -1,7 +1,7 @@
 package memoria.fisica;
 
 public class MemoriaRam implements MemoriaFisicaInterface {
-    private Byte[] mem;
+    private byte[] mem;
     private int latencia;
 
     public int length(){
@@ -9,28 +9,44 @@ public class MemoriaRam implements MemoriaFisicaInterface {
     }
 
     public MemoriaRam(int tam, int latencia){
-        this.mem = new Byte[tam];
+        this.mem = new byte[tam];
         this.latencia = latencia;
     }
 
-    public Byte[] read(int addr, int tam){
+    public byte[] read(int addr, int tam){
+        System.out.print("MemoriaRam.read");
+        System.out.print(" addr = [" + addr + "], tam = [" + tam + "]");
         sleepLat();
 
-        Byte[] bytes = new Byte[tam];
+        byte[] bytes = new byte[tam];
 
         for(int x = 0; x < tam; x++){
             bytes[x] = mem[addr+x];
         }
 
+
+        String read = "";
+        for(int x = 0; x < bytes.length; x++){
+            read += bytes[x];
+        }
+
+        System.out.println(" Leitura = " + read);
         return bytes;
     }
 
     @Override
-    public Byte read(int addr) {
+    public byte read(int addr) {
         return mem[addr];
     }
 
-    public void write(int addr, Byte[] bytes){
+    public void write(int addr, byte[] bytes){
+        String chars = "";
+
+        for(int x = 0; x < bytes.length; x++){
+            chars +=  bytes[x];
+        }
+
+        System.out.println("Escrevendo no endereço fisico " + addr + " valores " + chars.toString());
         sleepLat();
 
         for(int x = 0; x < bytes.length; x++){
@@ -39,7 +55,7 @@ public class MemoriaRam implements MemoriaFisicaInterface {
     }
 
     @Override
-    public void write(int addr, Byte b) {
+    public void write(int addr, byte b) {
         mem[addr] = b;
     }
 
