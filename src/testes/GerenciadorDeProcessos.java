@@ -104,6 +104,7 @@ public class GerenciadorDeProcessos {
             System.out.println("0 - Voltar");
             System.out.println("1 - Ler");
             System.out.println("2 - Escrever");
+            System.out.println("9 - Finalizar");
 
             escolha = Integer.parseInt(in.nextLine());
 
@@ -115,6 +116,9 @@ public class GerenciadorDeProcessos {
                     break;
                 case 2:
                     escrever();
+                    break;
+                case 9:
+                    os.finalizarProcesso(pid);
                     break;
                 default:
                     System.out.println("Opção invalida");
