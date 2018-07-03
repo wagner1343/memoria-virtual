@@ -57,7 +57,7 @@ public class OS{
             int frameIndex;
             int frameCount;
             for(int x = 0; x  < MMU.NUM_PAGINAS; x++){
-                if(tabelaDePaginas.isAlocado(x)){
+                if(tabelaDePaginas.getPagina(x).getBaseFAddr() > -1){
                     frameIndex = tabelaDePaginas.getPagina(x).getBaseFAddr() / MMU.TAM_FRAME;
                     frameCount = mmu.calcularFramesNecessarios(MMU.TAM_PAGINA);
 

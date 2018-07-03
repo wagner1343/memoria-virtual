@@ -46,13 +46,13 @@ public class MMU {
 
     public void liberarFrames(int frameIndex, int count){
 
-        System.out.println("Marcando frames de " + frameIndex + " até " + (frameIndex + count ) + " como marcados");
+        System.out.println("Marcando frames de " + frameIndex + " até " + (frameIndex + count -1 ) + " como livres");
         for(int x = 0; x < count; x++)
             frameOcupado[frameIndex + x] = 0;
     }
 
     public void ocuparFrames(int frameIndex, int count){
-        System.out.println("Marcando frames de " + frameIndex + " até " + (int) (frameIndex + count) + " como ocupados");
+        System.out.println("Marcando frames de " + frameIndex + " até " + (int) (frameIndex + count -1) + " como ocupados");
         for(int x = 0; x < count; x++)
             frameOcupado[frameIndex + x] = 1;
     }
