@@ -157,26 +157,21 @@ public class MMU {
 
     public TabelaDePaginas buscarTabelaNaMemoria(int tabelaFAddr){
 
-        byte[] tamBytes = memoriaFisica.read(tabelaFAddr, 4);
-        int tam = SerializationHelper.fromByteArray(tamBytes);
-
-        byte[] tabelaBytes = memoriaFisica.read(tabelaFAddr + 4, tam);
+        byte[] tabelaBytes = memoriaFisica.read(tabelaFAddr, TabelaDePaginas.TAMANHO_BYTES);
         TabelaDePaginas tabela = new TabelaDePaginas(tabelaBytes);
 
         return  tabela;
     }
 
     public void salvarEntradaNaMemoria(int tabelaFAddr, int numeroDePagina, EntradaDePagina entradaDePagina){
-        int entradaFAddr = tabelaFAddr + 4 + (numeroDePagina * EntradaDePagina.TAMANHO_BYTES);
+        int entradaFAddr = tabelaFAddr + (numeroDePagina * EntradaDePagina.TAMANHO_BYTES);
         memoriaFisica.write(entradaFAddr, entradaDePagina.serializar());
     }
 
     public void salvarTabelaNaMemoria(int tabelaFAddr, TabelaDePaginas tabelaDePaginas){
         byte[] tabelaBytes = tabelaDePaginas.serializar();
-        byte[] tamBytes = SerializationHelper.toByteArray(tabelaBytes.length);
 
-        memoriaFisica.write(tabelaFAddr, tamBytes);
-        memoriaFisica.write(tabelaFAddr+4, tabelaBytes);
+        memoriaFisica.write(tabelaFAddr, tabelaBytes);
     }
 
     public TLB getTlb() {
