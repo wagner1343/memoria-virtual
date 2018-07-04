@@ -66,7 +66,7 @@ public class OS{
             }
 
             frameIndex = processo.getTabelaFAddr() / MMU.TAM_FRAME;
-            frameCount = mmu.calcularFramesNecessarios(TabelaDePaginas.TAMANHO_BYTES + 4);
+            frameCount = mmu.calcularFramesNecessarios(TabelaDePaginas.TAMANHO_BYTES);
 
             mmu.liberarFrames(frameIndex, frameCount);
 
